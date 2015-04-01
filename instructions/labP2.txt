@@ -1,0 +1,93 @@
+--  Introduction  --  
+
+You are given a DataCarrier class. The following is known: 
+
+(1) An instance of the DataCarrier class has a state 
+    and a value associated with it. 
+
+(2) The state of a DataCarrier object is defined by it's 
+    ( p0, p1, p2, p3, p4 ) state parameter quintuple. 
+    The state can be changed by invoking the 
+    setState( int, int, int, int, int ) method.
+
+(3) The value of an individual state parameter 
+    p0, p1, p2, p3 and p4 can be either 0 or 1, i.e.,
+    p0 = 0 || 1 
+    p1 = 0 || 1 
+    p2 = 0 || 1 
+    p3 = 0 || 1 
+    p4 = 0 || 1 
+    
+    State parameter taking the value of either 0 or 1 is 
+    called a valid state parameter. 
+
+(4) A state of the DataCarrier object is called valid 
+    if it is formed by a permutation of five valid state 
+    parameters. Thus the (1, 1, 1, 1, 1) state is 
+    a valid state, while (1, 2, 1, 1, 1) is not.
+
+
+(5) Every valid state may have a non-null value 
+    associated with it. An invalid state 
+    has a null value associated with it.  
+   
+
+(6) The value associated with a valid state 
+    is stored at some unique position in the 
+    stateValues array. An element at position x 
+    in the stateValues array may be accessed via 
+    the corresponding setVx()/getVx() method, 
+    where x ranges from 0 to 31.
+
+
+(7) The user of a DataCarrier object does not 
+    need to know the set of valid states,
+    i.e., the user may attempt to set the state 
+    to ( 2, 9, 4, 3, 1) for instance. The user 
+    may also try to retrieve the value for 
+    this state. Both operations are valid.
+
+
+
+--  Your task --  
+
+Complete the given DataCarrier class by implementing the missing 
+setValue() and getValue() methods where: 
+
+getValue()
+   
+   - Returns the value associated with the current state 
+     of the DataCarrier object
+
+
+setValue( String sV ) 
+
+   - Associates the sV value with the current state
+     of the DataCarrier object provided that the current state 
+     is a valid state.
+
+
+
+--  Requirements --
+
+    - You may not access the stateValues array directly. 
+      Use the Getters and Setters provided. 
+
+    - You may not access the stateParams array directly. 
+      Use the Getters and Setters provided. 
+
+    - Your implementation may not rely on exaustive search. 
+      This means that enumerating valid states is not allowed. 
+      This means that such constructs as: 
+	if ( ( getP0() == 0 ) && ( getP1() == 0 ) && ...    
+		then return getV1(); 
+
+	if ( ( getP0() == 1 ) && ( getP1() == 0 ) && ...    
+                then return getV2(); 
+
+        ...
+
+      where all possible state parameter permutations are listed 
+      is off limits. Such a restriction applies to all variations of 
+      the above, including Maps, hashes, and other implementations 
+      that try to enumerate all possible permutations. 
