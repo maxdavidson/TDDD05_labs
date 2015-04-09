@@ -1,5 +1,10 @@
 package lab1;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.stream.IntStream;
+
 
 public class DataCarrier {
 	
@@ -51,16 +56,35 @@ public class DataCarrier {
 	private String getV30() { return stateValues[30]; }
 	private String getV31() { return stateValues[31]; }
 
+
 	public String getValue() {
-		final int state =  getP0() + 2 * getP1() + 4 * getP2() + 8 * getP3() + 16 * getP4();
+
+		final int[] values =
+			Arrays.stream(getClass().getDeclaredMethods())
+				.filter(method -> method.getName().startsWith("getP"))
+				.sorted(Comparator.comparingInt(method -> Integer.parseInt(method.getName().substring(4))))
+				.mapToInt(method -> {
+					try {
+						return (int) method.invoke(this);
+					} catch (Exception e) {
+						// YOLO
+						return -1;
+					}
+				})
+				.toArray();
+
+		// Test invalid state
+		if (!Arrays.stream(values).allMatch(n -> n == 0 || n == 1)) return null;
+
+		int state = IntStream.range(0, values.length).reduce(0, (sum, i) -> sum + (int)Math.pow(2, i) * values[i]);
 
 		try {
 			return (String) getClass().getDeclaredMethod("getV" + state).invoke(this);
 		} catch (Exception e) {
-			// Illegal state
 			return null;
 		}
 	}
+
 
 	// Setters 
 	private void setP0(  int    i ) { stateParams[0]  = i; }
@@ -111,12 +135,29 @@ public class DataCarrier {
 	}
 
 	public void setValue(String sV) {
-		final int state =  getP0() + 2 * getP1() + 4 * getP2() + 8 * getP3() + 16 * getP4();
+		final int[] values =
+			Arrays.stream(getClass().getDeclaredMethods())
+				.filter(method -> method.getName().startsWith("getP"))
+				.sorted(Comparator.comparingInt(method -> Integer.parseInt(method.getName().substring(4))))
+				.mapToInt(method -> {
+					try {
+						return (int) method.invoke(this);
+					} catch (Exception e) {
+						// YOLO
+						return -1;
+					}
+				})
+				.toArray();
+
+		// Test invalid state
+		if (!Arrays.stream(values).allMatch(n -> n == 0 || n == 1)) return;
+
+		int state = IntStream.range(0, values.length).reduce(0, (sum, i) -> sum + (int)Math.pow(2, i) * values[i]);
 
 		try {
 			getClass().getDeclaredMethod("setV" + state, String.class).invoke(this, sV);
 		} catch (Exception e) {
-			// Swallow it all.
+			// Do nothing
 		}
 	}
 

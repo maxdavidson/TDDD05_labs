@@ -26,7 +26,9 @@ public class DataCarrierTest {
 
     @Test
     public void invalidState() {
-        dataCarrier.setState(2, 1, 3, 1, 1);
+        dataCarrier.setState(2, 9, 4, 3, 1);
+        dataCarrier.setValue("whaat");
+
         assertNull(dataCarrier.getValue());
     }
 
